@@ -5,7 +5,9 @@ var keypress = require('keypress')
 
 var irobot = require('irobot');
 
-var robot = new irobot.Robot('/dev/ttyO0');
+var speed = 50;
+
+var robot = new irobot.Robot('/dev/ttyUSB0',{baudrate: 115200});
 robot.on('ready', function () {
   console.log('READY');
 });
@@ -47,31 +49,52 @@ keypress(process.stdin);
 process.stdin.on('keypress', function (ch, key) {
   console.log('got "keypress"', key);
 
-  if (key.name == 'w'){
-  	console.log("moved up");
-  	//up(10);
-    data = {left: 20, right: 20};
+ //keyboard commands
+    if (key.name == 'w'){
+    console.log("moved forward");
+    speed = speed * 1 + 50    
+    data = {left: speed, right: speed};
+    console.log (speed);
     robot.drive(data);
-  } else if (key.name == 's'){
-  	console.log("moved down");
-  	//down(10);
+
+
+    } else if (key.name == 's'){
+    console.log("moved backward");
+    speed = speed * 1 - 50
+    data = {left: speed, right: speed};
+    console.log (speed);
+    robot.drive(data);
+
+
   } else if (key.name == 'd'){
-  	console.log("moved right");
-  	//turnRightDegrees(10);
-  } else if (key.name == 'a'){
-  	console.log("moved left");
-  	//turnLeftDegrees(10);
-  } else if (key.name == 'space'){
-  	console.log("stop");
-        data = {left: 0, right: 0};
+    console.log("spin right");
+    speed = speed * 1 + 50
+    data = {left: -speed, right: speed};
+    console.log(speed);
     robot.drive(data);
-  	//fire();
+
+
+  } else if (key.name == 'a'){
+    console.log("spin left");
+    speed = speed * 1 + 50    
+    data = {left: speed, right: -speed};
+    console.log(speed);
+    robot.drive(data);
+
+
+  } else if (key.name == 'space'){
+    console.log("stop");
+    speed = speed * 0
+    data = {left: speed, right: speed};
+    console.log(speed);
+    robot.drive(data);
+    
   }
 
 
-  if (key && key.ctrl && key.name == 'c') {
-    console.log('control c');
-    process.exit(0);
+if (key && key.ctrl && key.name == 'c') {
+  console.log('control c');
+  process.exit(0);
    // process.stdin.pause();
   }
 });
@@ -81,4 +104,4 @@ if (typeof process.stdin.setRawMode == 'function') {
 } else {
   tty.setRawMode(true);
 }
-process.stdin.resume();
+  process.stdin.resume();
