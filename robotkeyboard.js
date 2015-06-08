@@ -68,7 +68,7 @@ process.stdin.on('keypress', function (ch, key) {
 
   } else if (key.name == 'd'){
     console.log("spin right");
-    speed = speed * 1 + 50
+    speed = 150
     data = {left: -speed, right: speed};
     console.log(speed);
     robot.drive(data);
@@ -76,7 +76,7 @@ process.stdin.on('keypress', function (ch, key) {
 
   } else if (key.name == 'a'){
     console.log("spin left");
-    speed = speed * 1 + 50    
+    speed = 150    
     data = {left: speed, right: -speed};
     console.log(speed);
     robot.drive(data);
